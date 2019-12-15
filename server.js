@@ -41,11 +41,17 @@ let get=require("./router/get");
 let app=express();
 //开启静态托管(以www文件夹为本服务器的静态资源根目录,下面那些路由处理都是动态请求)
 app.use(express.static('www'));
+//开启模板引擎
+app.set('views','./templet');//设置模板引擎进行渲染页面的文件夹
+app.set('veiw engine','ejs');
 //使用路由实例(可以让代码更简洁，不用在一个服务器文件里写多个路由处理，可以将同一类的路由处理放到一起处理，大大方便了维护和代码可读性)
 //处理get一类的请求
 app.use('/get',get);
 //处理post一类的请求
 app.use('/post',post);
+app.get('/templet',(req,res)=>{
+     res.render('index.ejs',{data:"你好ejs模板引擎"});
+})
 //监听端口号
 app.listen(3000);
 
