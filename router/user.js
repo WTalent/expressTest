@@ -8,26 +8,47 @@ const router = express.Router();
 router.get("/register", (req, res) => {
   res.render("index.ejs");
 });
-router.post("/process", (req, res) => {
+router.post("/process", async (req, res) => {
   //1.取得从前端传来的数据
   let username = req.body.username;
   let password = req.body.password;
   let passwordAgain = req.body.passwordAgain;
   let email = req.body.email;
+  
   //2.处理数据(是否为空，是否为已经注册过的)
-  user.findOne({ username:email}).then((data)=> {
-    if (data) {
-      res.send("邮箱已经被注册过了!");
-    } else {
-      //3.将数据存在mongodb数据库中
-      let u = new user(req.body);
-       u.save().then(() => {
-          res.send("存入成功！");
-        }).catch((error) => {
-          res.send(error);
-        });
-    }
-  });
+  if(!username||!password||!passwordAgain||!email)
+  {
+    //数据为空就提示错误
+    res.send("有输入为空!");
+    return ;
+  }
+
+  const data=await user.findOne({email:email}); //user.findOne返回一个promise对象
+  if(data)
+  {
+    res.send("已经注册过该邮箱了！");
+  }
+  else
+  {
+   let u=new user(req.body);
+   await u.save();
+   res.send("注册完毕");
+  }
+
+  // user.findOne({ email:email}).then((data)=> {
+  //   console.log(data);
+  //   if (data) {
+  //     res.send("邮箱已经被注册过了!");
+  //   } else {
+  //     //3.将数据存在mongodb数据库中
+  //     let u = new user(req.body);
+  //      u.save().then(() => {
+  //         res.send("存入成功！");
+  //       }).catch((error) => {
+  //         res.send(error);
+  //       });
+  //   }
+  // });
 });
 //暴露出去，给其他文件调用
 //根据commonjs规范
