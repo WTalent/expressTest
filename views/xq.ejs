@@ -1,0 +1,23 @@
+<!--详情页面-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>详情页面</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
+</head>
+<body>
+    <!--导航栏-->
+    <%- include("header.ejs") %>
+    <!--详情页-->
+    <div class="card my-5">
+        <div class="card-body">
+          <h5 class="card-title">标题：<%= data.title %></h5>
+          <h6 class="card-subtitle mb-2 text-muted">日期：<%= data.updatedAt %></h6>
+          <p class="card-text">内容：<%= data.content %></p>
+        </div>
+      </div>
+
+<%- include("footer.ejs") %>

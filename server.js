@@ -7,6 +7,7 @@ const cookies=require("cookie-parser");
 //引入各种路由处理文件
 const userRouter=require("./router/user");
 const postRouter=require("./router/post");
+const listRouter=require("./router/list");
 
 //实例化express对象
 const server=express();
@@ -26,8 +27,9 @@ server.use(express.urlencoded({extended:true}));
 server.use(cookies());
 
 //处理各种路由
-server.use('/user',userRouter);
-server.use('/post',postRouter);
+server.use('/users',userRouter);
+server.use('/posts',postRouter);
+server.use('/list',listRouter);
 
 //监听端口号3000
 server.listen(3000);

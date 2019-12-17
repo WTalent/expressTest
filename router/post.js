@@ -19,7 +19,7 @@ router.post("/createProcess",async (req,res)=>{
   {
     const u=new posts(req.body);
     await u.save();
-    res.send("添加文章成功!");
+    res.redirect('/list'); //res.redirect()方法为重定向方法
   }
 
 })
