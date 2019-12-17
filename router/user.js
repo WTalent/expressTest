@@ -2,6 +2,8 @@
 const express = require("express");
 //引入users模块
 const user = require("../module/users");
+//引入bcryptjs密码加密模块
+const bcryptjs=require("bcryptjs");
 //实例化路由，用来接收传进来的路由
 const router = express.Router();
 //处理路由
@@ -30,7 +32,12 @@ router.post("/process", async (req, res) => {
   }
   else
   {
-   let u=new user(req.body);
+   let u=new user({
+      username:req.body.username,
+      password:bcryptjs.hashSync(req.body.password,10),
+      passwordAgain:bcryptjs.hashSync(req.body.passwordAgain,10),
+      email:req.body.email
+   });//调用nodejs的密码加密模块bcryptjs，然后调用它的hash方法进行加密
    await u.save();
    res.send("注册完毕");
   }

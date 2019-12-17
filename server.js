@@ -1,4 +1,4 @@
-//添加注册功能
+//服务器
 
 //引入express模块，快速搭建一个nodejs的web服务器
 const express=require("express");
@@ -6,6 +6,7 @@ const express=require("express");
 const cookies=require("cookie-parser");
 //引入各种路由处理文件
 const userRouter=require("./router/user");
+const postRouter=require("./router/post");
 
 //实例化express对象
 const server=express();
@@ -26,6 +27,7 @@ server.use(cookies());
 
 //处理各种路由
 server.use('/user',userRouter);
+server.use('/post',postRouter);
 
 //监听端口号3000
 server.listen(3000);
