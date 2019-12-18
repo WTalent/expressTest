@@ -12,6 +12,9 @@ const auth=require("./middleware/auth");
 const userRouter=require("./router/user");
 const postRouter=require("./router/post");
 const listRouter=require("./router/list");
+const fileUpload=require("./router/file");
+
+
 
 //实例化express对象
 const server=express();
@@ -43,9 +46,9 @@ server.use(session(
 ));
 //处理各种路由
 server.use('/users',userRouter);         //该路由用来注册用户和用户登录
-server.use('/posts',auth(),postRouter);  //该路由用来添加文章
-server.use('/list',auth(),listRouter);   //该路由用来展示数据库数据和修改数据以及删除数据(即文章列表，文章编辑，文章删除)
-
+server.use('/posts',postRouter);  //该路由用来添加文章
+server.use('/list',listRouter);   //该路由用来展示数据库数据和修改数据以及删除数据(即文章列表，文章编辑，文章删除)
+server.use('/file',fileUpload);   //处理文件相关功能
 
 //监听端口号3000
 server.listen(3000);

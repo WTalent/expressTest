@@ -1,15 +1,16 @@
 //渲染文章添加页面和文章添加功能
 const express=require("express");
 const posts=require("../module/posts");
+const auth=require("../middleware/auth");
 const router=express.Router();
 
 
-router.get("/create",(req,res)=>{
+router.get("/create",auth(),(req,res)=>{
    //渲染文章添加页面
-  res.render("create.ejs");
+  res.render("create.ejs",{d:req.session.username});
 });
 
-router.post("/createProcess",async (req,res)=>{
+router.post("/createProcess",auth(),async (req,res)=>{
   //处理添加的文章
   if(!req.body.title||!req.body.content)
   {

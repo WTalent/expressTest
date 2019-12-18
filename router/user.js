@@ -10,7 +10,7 @@ const auth=require("../middleware/auth");
 const router = express.Router();
 //处理路由
 router.get("/register", (req, res) => {
-  res.render("index.ejs");
+  res.render("index.ejs",{d:req.session.username});
 });
 router.post("/process", async (req, res) => {
   //1.取得从前端传来的数据
@@ -41,7 +41,8 @@ router.post("/process", async (req, res) => {
       email:req.body.email
    });//调用nodejs的密码加密模块bcryptjs，然后调用它的hash方法进行加密
    await u.save();
-   res.send("注册完毕");
+   //注册成功后，跳转到文章列表页面
+   res.redirect('/list');
   }
 
   // user.findOne({ email:email}).then((data)=> {
@@ -59,11 +60,22 @@ router.post("/process", async (req, res) => {
   //   }
   // });
 });
+//处理登录注销
+router.get('/logout',(req,res)=>{
+  //将req.session清除即可
+  req.session.destroy();
+  //然后跳转到登录页面
+  res.redirect('/users/login');
+
+})
 
 //处理登录页面
 router.get('/login',(req,res)=>{
   //渲染登录页面
-  res.render("login.ejs");
+  //接收url上的rediect数据
+  //判断rediect是否为空，为空的话就赋值为文章列表
+  let rediect=req.query.rediect?req.query.rediect:'/list';
+  res.render("login.ejs",{rediect,d:req.session.username});
 });
 
 //处理登录
@@ -71,6 +83,7 @@ router.post('/login',async(req,res)=>{
     //获得登录的数据
     let email=req.body.email;
     let password=req.body.password;
+    let rediect=req.body.rediect;
     
     if(!email||!password)
     {
@@ -99,7 +112,7 @@ router.post('/login',async(req,res)=>{
    }
    //登录成功，给req.session对象加个username，以此来告诉浏览器用户登录成功
    req.session.username=isok; //直接把该用户的数据赋值到session对象上
-   res.redirect('/list');
+   res.redirect(rediect);
 
 })
 
