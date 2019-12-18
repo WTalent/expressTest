@@ -4,6 +4,10 @@
 const express=require("express");
 //引入cookie-parser模块，给req添加cookies属性
 const cookies=require("cookie-parser");
+//引入express-session模块，为确定用户是否登录做处理
+const session=require("express-session");
+//引入一个处理登录校验的中间件，用于解决繁琐的登录检验工作
+const auth=require("./middleware/auth");
 //引入各种路由处理文件
 const userRouter=require("./router/user");
 const postRouter=require("./router/post");
@@ -26,10 +30,22 @@ server.use(express.urlencoded({extended:true}));
 //调用中间件，给req添加cookies属性
 server.use(cookies());
 
+//调用express-session中间件，给req添加session属性
+server.use(session(
+  {
+    secret:'sadadasdaa',//cookie的签名
+    resave:true, //在对session进行更新操作的时候，是否同时对浏览器保存的session进行更新
+    saveUninitialized:false,  //默认是否直接保存session到浏览器的cookie里
+    cookie:{
+     maxAge:1000*60*60*2 //2个小时的有效期
+    }
+  }
+));
 //处理各种路由
-server.use('/users',userRouter);
-server.use('/posts',postRouter);
-server.use('/list',listRouter);
+server.use('/users',userRouter);         //该路由用来注册用户和用户登录
+server.use('/posts',auth(),postRouter);  //该路由用来添加文章
+server.use('/list',auth(),listRouter);   //该路由用来展示数据库数据和修改数据以及删除数据(即文章列表，文章编辑，文章删除)
+
 
 //监听端口号3000
 server.listen(3000);

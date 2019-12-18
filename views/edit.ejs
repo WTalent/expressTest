@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>修改文章页面</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
+</head>
+<body>
+   <!--导航条-->
+     <%- include("header.ejs") %>
+   <!--添加文章-->
+    <div class="container my-5">
+     <div class="row">
+          <div class="col-md-4 offset-md-4">
+            <form action="/list/edit" method="POST">
+                <div class="form-group">
+                  <label for="exampleFormControlInput1">文章名</label>
+                  <input type="text" name="title" value="<%=p.title %>" class="form-control" id="exampleFormControlInput1">
+                </div>
+                <div class="form-group">
+                  <label for="exampleFormControlTextarea1">文章内容</label>
+                  <textarea name="content"  class="form-control" id="exampleFormControlTextarea1" rows="3"><%=p.content %></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                </div>
+                 <input type="hidden" name="id" value="<%=p._id%>">
+              </form>  
+          </div>  
+     </div>         
+    </div>
+<%- include("footer.ejs") %>
