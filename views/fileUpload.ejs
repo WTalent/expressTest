@@ -13,11 +13,41 @@
     <!--导航条-->
     <%- include('header.ejs') %>
     <!--文件上传-->
+    <form action="/file/Process" method="POST" enctype="multipart/form-data">
     <div class="card my-5 ml-5" style="width: 18rem;">
-       
         <div class="card-body">
           <h5 class="card-title">切勿一次性上传多个文件</h5>
-          <a href="#" class="btn btn-primary">上传文件</a>
+          <!-- <a href="#" class="btn btn-primary">上传文件</a> -->
+          <input class="my-5" type="file" name="file"/>
+          <button class="btn btn-primary mt-2" type="submit">上传文件</button>
         </div>
       </div>
+      </form>
+
+     <!--一个input一次性上传多个文件-->
+      <form action="/file/ProcessMany" method="POST" enctype="multipart/form-data">
+        <div class="card my-5 ml-5" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">可以一次性上传多个文件</h5>
+              <!-- <a href="#" class="btn btn-primary">上传文件</a> -->
+              <input class="my-5" type="file" name="file" multiple/>
+              <button class="btn btn-primary mt-2" type="submit">上传文件</button>
+            </div>
+          </div>
+          </form>
+
+      <!--处理多个input情况-->
+      <form action="/file/ProcessManyInput" method="POST" enctype="multipart/form-data">
+        <div class="card my-5 ml-5" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">请上传身份证正面</h5>
+              <input class="my-5" type="file" name="file2"/>
+              <h5 class="card-title">请上传身份证反面</h5>
+              <input class="my-5" type="file" name="file3"/>
+              <button class="btn btn-primary mt-2" type="submit">上传文件</button>
+            </div>
+          </div>
+          </form>
+
+
       <%- include('footer.ejs') %>

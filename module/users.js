@@ -6,7 +6,11 @@ const schema=new mongoose.Schema({
    username:String,
    password:String,
    passwordAgain:String,
-   email:String
+   email:String,
+   adavat:{
+      type:String,
+      default:"/images/19_logo.jpg" //默认头像
+   }
 });
 //创建集合
 const model=mongoose.model('user',schema);

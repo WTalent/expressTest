@@ -8,6 +8,17 @@ const bcryptjs=require("bcryptjs");
 const auth=require("../middleware/auth");
 //实例化路由，用来接收传进来的路由
 const router = express.Router();
+//引入multer模块，处理文件传输
+const multer=require("multer");
+//实例化multer
+const upload=multer({
+    dest:"upLoadImages" //临时存储文件夹
+});
+//引入path模块
+const path=require("path");
+//引入fs模块
+const fs=require("fs");
+
 //处理路由
 router.get("/register", (req, res) => {
   res.render("index.ejs",{d:req.session.username});
@@ -116,6 +127,39 @@ router.post('/login',async(req,res)=>{
 
 })
 
+//渲染用户信息页面
+router.get('/infor',auth(),(req,res)=>{
+   res.render('infor.ejs',{d:req.session.username});
+})
+//处理更改数据
+router.post('/update',auth(),upload.single('file'),async (req,res)=>{
+  let fileName='';
+  if(!req.file)
+  {
+    //没有提交图片时 
+    fileName="19_logo.jpg";
+  }
+  else
+  {
+  //处理文件
+  //首先新名字
+  fileName=new Date().getTime()+"_"+req.file.originalname;
+  //然后拼接得到新路径
+  let newPath=path.resolve(__dirname,"../www/images/"+fileName);
+  //读取文件
+  let fileContent=fs.readFileSync(req.file.path);
+  //将读取的文件写入新路径
+  fs.writeFileSync(newPath,fileContent);
+
+  }
+  //修改数据库数据,因为已经登录，所以有req.session.username属性
+  //需要判断是否同时修改用户名和图片
+  await user.updateOne({email:req.body.email},{username:req.body.username,adavat:"/images/"+fileName});
+  let ul=await user.findOne({email:req.body.email});
+  //更新req.session.username
+  req.session.username=ul;
+  res.redirect('back');
+})
 
 
 //暴露出去，给其他文件调用

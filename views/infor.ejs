@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>用户信息</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
+</head>
+<body>
+    <!--导航条-->
+    <%- include('header.ejs') %>
+    <!--用户信息界面-->
+    <div class="container">
+     <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <form class="my-5" action="/users/update" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">邮箱(不可修改)</label>
+                  <input class="form-control" type="email" name="email" id="exampleInputEmail1" value="<%=d.email %>" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputUsername">用户名</label>
+                  <input type="text" name="username" class="form-control" id="exampleInputUsername" value="<%=d.username%>">
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlFile1">点击更换头像</label>
+                    <input type="file" name="file" class="form-control-file" id="exampleFormControlFile1">
+                  </div>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary">保存修改</button>
+                </div>
+              </form>
+        </div>
+     </div>
+
+    </div>
+    
+
+    
+<%- include('footer.ejs') %>
